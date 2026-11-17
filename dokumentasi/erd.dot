@@ -1,0 +1,80 @@
+digraph ERD {
+  graph [rankdir=LR, fontname="Helvetica", fontsize=12, pad=0.4, nodesep=0.6, ranksep=1.1, bgcolor="white"];
+  node  [shape=plain, fontname="Helvetica", fontsize=11];
+  edge  [fontname="Helvetica", fontsize=10, color="#555555", arrowhead=none];
+
+  tb_user [label=<
+  <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="4" BGCOLOR="white">
+   <TR><TD BGCOLOR="#2c3e50" COLSPAN="2"><FONT COLOR="white"><B>tb_user</B></FONT></TD></TR>
+   <TR><TD ALIGN="LEFT"><B>PK</B></TD><TD ALIGN="LEFT">id_user : bigint</TD></TR>
+   <TR><TD ALIGN="LEFT"></TD><TD ALIGN="LEFT">nama_lengkap : varchar(100)</TD></TR>
+   <TR><TD ALIGN="LEFT"></TD><TD ALIGN="LEFT">username : varchar(50) UNIQUE</TD></TR>
+   <TR><TD ALIGN="LEFT"></TD><TD ALIGN="LEFT">password : varchar(100)</TD></TR>
+   <TR><TD ALIGN="LEFT"></TD><TD ALIGN="LEFT">role : enum(admin,petugas,owner)</TD></TR>
+   <TR><TD ALIGN="LEFT"></TD><TD ALIGN="LEFT">status_aktif : tinyint</TD></TR>
+   <TR><TD ALIGN="LEFT"></TD><TD ALIGN="LEFT">remember_token, created_at, updated_at</TD></TR>
+  </TABLE>>];
+
+  tb_kendaraan [label=<
+  <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="4" BGCOLOR="white">
+   <TR><TD BGCOLOR="#2c3e50" COLSPAN="2"><FONT COLOR="white"><B>tb_kendaraan</B></FONT></TD></TR>
+   <TR><TD ALIGN="LEFT"><B>PK</B></TD><TD ALIGN="LEFT">id_kendaraan : bigint</TD></TR>
+   <TR><TD ALIGN="LEFT"></TD><TD ALIGN="LEFT">plat_nomor : varchar(15)</TD></TR>
+   <TR><TD ALIGN="LEFT"></TD><TD ALIGN="LEFT">jenis_kendaraan : varchar(20)</TD></TR>
+   <TR><TD ALIGN="LEFT"></TD><TD ALIGN="LEFT">warna : varchar(20) NULL</TD></TR>
+   <TR><TD ALIGN="LEFT"></TD><TD ALIGN="LEFT">pemilik : varchar(100)</TD></TR>
+   <TR><TD ALIGN="LEFT"><B>FK</B></TD><TD ALIGN="LEFT">id_user : bigint</TD></TR>
+   <TR><TD ALIGN="LEFT"></TD><TD ALIGN="LEFT">created_at, updated_at</TD></TR>
+  </TABLE>>];
+
+  tb_tarif [label=<
+  <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="4" BGCOLOR="white">
+   <TR><TD BGCOLOR="#2c3e50" COLSPAN="2"><FONT COLOR="white"><B>tb_tarif</B></FONT></TD></TR>
+   <TR><TD ALIGN="LEFT"><B>PK</B></TD><TD ALIGN="LEFT">id_tarif : bigint</TD></TR>
+   <TR><TD ALIGN="LEFT"></TD><TD ALIGN="LEFT">jenis_kendaraan : enum(motor,mobil,lainnya)</TD></TR>
+   <TR><TD ALIGN="LEFT"></TD><TD ALIGN="LEFT">tarif_per_jam : decimal(10,0)</TD></TR>
+   <TR><TD ALIGN="LEFT"></TD><TD ALIGN="LEFT">created_at, updated_at</TD></TR>
+  </TABLE>>];
+
+  tb_area_parkir [label=<
+  <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="4" BGCOLOR="white">
+   <TR><TD BGCOLOR="#2c3e50" COLSPAN="2"><FONT COLOR="white"><B>tb_area_parkir</B></FONT></TD></TR>
+   <TR><TD ALIGN="LEFT"><B>PK</B></TD><TD ALIGN="LEFT">id_area : bigint</TD></TR>
+   <TR><TD ALIGN="LEFT"></TD><TD ALIGN="LEFT">nama_area : varchar(50)</TD></TR>
+   <TR><TD ALIGN="LEFT"></TD><TD ALIGN="LEFT">kapasitas : int</TD></TR>
+   <TR><TD ALIGN="LEFT"></TD><TD ALIGN="LEFT">terisi : int (default 0)</TD></TR>
+   <TR><TD ALIGN="LEFT"></TD><TD ALIGN="LEFT">created_at, updated_at</TD></TR>
+  </TABLE>>];
+
+  tb_transaksi [label=<
+  <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="4" BGCOLOR="white">
+   <TR><TD BGCOLOR="#2c3e50" COLSPAN="2"><FONT COLOR="white"><B>tb_transaksi</B></FONT></TD></TR>
+   <TR><TD ALIGN="LEFT"><B>PK</B></TD><TD ALIGN="LEFT">id_parkir : bigint</TD></TR>
+   <TR><TD ALIGN="LEFT"><B>FK</B></TD><TD ALIGN="LEFT">id_kendaraan : bigint</TD></TR>
+   <TR><TD ALIGN="LEFT"><B>FK</B></TD><TD ALIGN="LEFT">id_tarif : bigint</TD></TR>
+   <TR><TD ALIGN="LEFT"><B>FK</B></TD><TD ALIGN="LEFT">id_user : bigint</TD></TR>
+   <TR><TD ALIGN="LEFT"><B>FK</B></TD><TD ALIGN="LEFT">id_area : bigint</TD></TR>
+   <TR><TD ALIGN="LEFT"></TD><TD ALIGN="LEFT">waktu_masuk : datetime</TD></TR>
+   <TR><TD ALIGN="LEFT"></TD><TD ALIGN="LEFT">waktu_keluar : datetime NULL</TD></TR>
+   <TR><TD ALIGN="LEFT"></TD><TD ALIGN="LEFT">durasi_jam : int NULL</TD></TR>
+   <TR><TD ALIGN="LEFT"></TD><TD ALIGN="LEFT">biaya_total : decimal(10,0) NULL</TD></TR>
+   <TR><TD ALIGN="LEFT"></TD><TD ALIGN="LEFT">status : enum(masuk,keluar)</TD></TR>
+   <TR><TD ALIGN="LEFT"></TD><TD ALIGN="LEFT">created_at, updated_at</TD></TR>
+  </TABLE>>];
+
+  tb_log_aktivitas [label=<
+  <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="4" BGCOLOR="white">
+   <TR><TD BGCOLOR="#2c3e50" COLSPAN="2"><FONT COLOR="white"><B>tb_log_aktivitas</B></FONT></TD></TR>
+   <TR><TD ALIGN="LEFT"><B>PK</B></TD><TD ALIGN="LEFT">id_log : bigint</TD></TR>
+   <TR><TD ALIGN="LEFT"><B>FK</B></TD><TD ALIGN="LEFT">id_user : bigint</TD></TR>
+   <TR><TD ALIGN="LEFT"></TD><TD ALIGN="LEFT">aktivitas : varchar(100)</TD></TR>
+   <TR><TD ALIGN="LEFT"></TD><TD ALIGN="LEFT">waktu_aktivitas : datetime</TD></TR>
+  </TABLE>>];
+
+  tb_user -> tb_kendaraan [taillabel="1", headlabel="N"];
+  tb_user -> tb_transaksi [taillabel="1", headlabel="N"];
+  tb_user -> tb_log_aktivitas [taillabel="1", headlabel="N"];
+  tb_kendaraan -> tb_transaksi [taillabel="1", headlabel="N"];
+  tb_tarif -> tb_transaksi [taillabel="1", headlabel="N"];
+  tb_area_parkir -> tb_transaksi [taillabel="1", headlabel="N"];
+}
